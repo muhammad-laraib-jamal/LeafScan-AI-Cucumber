@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LeafGuard AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<header class="hero">
+    <h1>🌿 LeafGuard AI</h1>
+    <p>Smart Cucumber Disease Detection</p>
+</header>
+
+<div class="container">
+
+    <div class="card glass">
+        <h2>About Cucumber</h2>
+        <p>
+            Detect diseases like Powdery Mildew and Leaf Spot instantly using AI.
+        </p>
+    </div>
+
+    <div class="card glass upload-card">
+        <h2>Upload Leaf Image</h2>
+
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Scan Now</button>
+        </form>
+    </div>
+
+    {% if image_path %}
+    <div class="card glass">
+        <h3>Preview</h3>
+        <img src="{{ image_path }}">
+    </div>
+    {% endif %}
+
+    {% if prediction %}
+    <div class="card glass result {{ 'healthy' if prediction == 'Healthy' else 'disease' }}">
+        <h2>{{ prediction }}</h2>
+        <p>{{ confidence }}% confidence</p>
+
+        {% if prediction == 'Healthy' %}
+            <p>🌿 Plant is healthy</p>
+        {% elif prediction == 'Powdery Mildew' %}
+            <p>⚠ Fungal infection detected</p>
+        {% else %}
+            <p>⚠ Leaf damage detected</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
